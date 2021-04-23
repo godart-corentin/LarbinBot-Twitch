@@ -15,4 +15,5 @@ RUN chmod +x /app/entrypoint.sh
 
 WORKDIR /bot
 ENV LARBIN_FILE=/bot
+COPY larbin.yml .
 ENTRYPOINT [ "/app/entrypoint.sh" ]
