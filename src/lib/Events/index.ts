@@ -1,21 +1,21 @@
-import { ITwitchService } from '../../services/TwitchService';
+import { ITwitchService } from "../../services/TwitchService";
 
 /**
  * Event Type
  */
 export enum EventType {
-  RAIDED = 'raided',
-  JOIN = 'join',
-  RESUB = 'resub',
-  SUBMYSTERYGIFT = 'submysterygift',
-  SUBGIFT = 'subgift',
-  SUBSCRIPTION = 'subscription'
+  RAIDED = "raided",
+  JOIN = "join",
+  RESUB = "resub",
+  SUBMYSTERYGIFT = "submysterygift",
+  SUBGIFT = "subgift",
+  SUBSCRIPTION = "subscription",
 }
 
 /**
  * Base Event
  */
-export interface IEvent<T extends IEventParams>  {
+export interface IEvent<T extends IEventParams> {
   Type: EventType;
   Action(twitchService: ITwitchService, params: T): void;
 }
@@ -41,8 +41,8 @@ export class JoinEventParams implements IEventParams {
 export class ResubEventParams implements IEventParams {
   Channel: string;
   Username: string;
-  Months: number;
   Message: string;
+  CumulativeMonths: number;
 }
 
 export class SubGiftEventParams implements IEventParams {
@@ -69,5 +69,5 @@ export class SubscriptionEventParams implements IEventParams {
 /**
  * Events
  */
-export * from './RandomMessageEvent';
-export * from './RoundRobinMessageEvent';
+export * from "./RandomMessageEvent";
+export * from "./RoundRobinMessageEvent";

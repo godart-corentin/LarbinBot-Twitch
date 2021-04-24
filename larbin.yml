@@ -12,89 +12,89 @@ commands:
   - name: "!epic"
     policies:
       others: true
-    messages: 
+    messages:
       - "Mon pseudo EPIC pour jouer ensemble : Onegaxx_TV. Deux règles, être follower et rester sur le live :p"
   - name: "!youtube"
     policies:
       others: true
-    messages: 
+    messages:
       - "Abonne toi à la chaine Youtube : https://www.youtube.com/channel/UCeinYmZ68-NuNZW9aBxB_VA?view_as=subscriber"
   - name: "!twitter"
     policies:
       others: true
-    messages: 
+    messages:
       - "Suis-moi sur Twitter : https://twitter.com/Onegaxx"
   - name: "!giveaway"
     policies:
       others: true
-    messages: 
+    messages:
       - "Giveaway si les objectifs sont atteints ! Le gain ? une clé de jeu que le gagnant choisira parmi une liste définie ! Le gagnant ? Un follower tiré au sort aléatoirement en direct sur le live, qu'il soit présent ou non au moment du tirage ! Un minimum de présence sur mes lives est tout de même nécessaire =p"
   - name: "!facebook"
     policies:
       others: true
-    messages: 
+    messages:
       - "Mon Facebook : https://www.facebook.com/Onegaxx"
   - name: "!donation"
     policies:
       others: true
-    messages: 
+    messages:
       - "Pour me soutenir c'est ici : https://streamlabs.com/onegaxx_"
   - name: "!discord"
     policies:
       others: true
-    messages: 
+    messages:
       - "Le discord du Crew (followers) : https://discord.gg/jZXY5Ba"
   - name: "!delai"
     policies:
       others: true
-    messages: 
+    messages:
       - "Il n'y a pas de délai."
   - name: "!callot"
     policies:
       others: true
-    messages: 
+    messages:
       - "Prejent !!!!"
   - name: "!config"
     policies:
       others: true
-    messages: 
+    messages:
       - "Ma config  : CPU : i7-4790K / GPU : GTX 1070 EVGA SC Black Edition / RAM : 16 GO / SSD : 250 GO SAMSUNG 850 EVO / HDD : 2 To / Ecran Gaming : Acer XB240H 144hz 3D / Ecran Monitoring : BenQ GL2450 60hz / Clavier : Asus Cerberus / Souris : Logitech g402  / Micro : Bird UM1 / Casque : HyperX Cloud Alpha / pour le reste et les détails, c'est en description :p"
   - name: "!prime"
     policies:
       others: true
-    messages: 
+    messages:
       - "N'oubliez pas qu'avec Twitch Prime vous pouvez vous sub gratuitement à la chaîne si vous avez Amazon Prime ! Ça se passe ici : https://twitch.amazon.com/prime"
   - name: "!raid"
     policies:
       others: true
-    messages: 
+    messages:
       - "Voici mon lien d'installation pour Raid: Shadow Legends. Installe-le à l'aide de ce lien et nous gagnerons tous les deux des cadeaux gratuits qui nous donneront un coup de pouce ! https://link.plrm.zone/app/da0g1"
   - name: "!instreamly"
     policies:
       others: true
-    messages: 
+    messages:
       - "Cliquez sur le lien et rejoignez la famille inSTREAMLY ! Streamez et gagnez de l'argent grâce à votre passion ! https://instream.ly/inS-FR_onegaxx_?p=10"
 schedulers:
   - id: "social"
     minutes: 15
-    random: false 
+    random: false
     messages:
-    - "Suis-moi sur mes réseaux sociaux pour tout savoir sur mon stream et ma chaine youtube ! (commandes : !youtube !twitter !facebook)"
-    - "N'hésites pas à me follow pour participer au Giveaway des 500 follows ! Tapes la commande !giveaway pour plus d'infos :p"
-    - "N'oubliez pas qu'avec Twitch Prime vous pouvez vous sub gratuitement à la chaîne si vous avez Amazon Prime ! Ça se passe ici : https://twitch.amazon.com/prime"
+      - "Suis-moi sur mes réseaux sociaux pour tout savoir sur mon stream et ma chaine youtube ! (commandes : !youtube !twitter !facebook)"
+      - "N'hésites pas à me follow pour participer au Giveaway des 500 follows ! Tapes la commande !giveaway pour plus d'infos :p"
+      - "N'oubliez pas qu'avec Twitch Prime vous pouvez vous sub gratuitement à la chaîne si vous avez Amazon Prime ! Ça se passe ici : https://twitch.amazon.com/prime"
 events:
   - name: "raided"
-    messages: 
+    messages:
       - "Un grand merci à {{ Username }} pour son Raid de {{ Viewers }} viewers !! Bienvenue à tous !"
   - name: "resub"
-    messages: 
-      - "{{ Username }} continue l'aventure avec {{ Months }} consécutifs !! ({{ Months }}e mois). Merci l'ami !"
+    messages:
+      - "{{ Username }} aime être un Teuteu apparemment. C'est son {{ CumulativeMonths }}e mois. Merci l'ami !"
   - name: "submysterygift"
-    messages: 
+    messages:
       - "{{ Username }} vient d'offrir {{ OfferedSubs }} subs !! Un grand merci à lui. (Avec un total de {{ GiftCount }} sub offert)"
   - name: "subgift"
-    messages: 
+    messages:
       - "{{ Username }} vient d'offrir un sub à {{ RecipientUsername }} !! Un grand merci à lui, avec un total de {{ GiftCount }} sub offert!."
   - name: "subscription"
-    messages: 
-      - "{{ Username }} rejoint l'aventure !! Merci à toi."
+    messages:
+      - "{{ Username }} devient Teuteu !! Merci à toi."
