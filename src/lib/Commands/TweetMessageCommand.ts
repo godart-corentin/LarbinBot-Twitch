@@ -20,15 +20,19 @@ export class TweetMessageCommand extends BaseCommand {
   }
 
   public Action(twitchService: TwitchService, message: string): void {
-    let formattedMessage = `${message.replace(
+    twitchService.Tweet(this.FormatMessage(message));
+  }
+
+  private FormatMessage(inputMessage: string): string {
+    let outputMessage = `${inputMessage.replace(
       "!tweet ",
       ""
     )}\r\n\r\nÇa se passe ici: ▶ twitch.tv/${this._channel}`;
 
     if (this._tags.length > 0) {
-      formattedMessage += `\r\n\r\n${this._tags.join(" ")}`;
+      inputMessage += `\r\n\r\n${this._tags.join(" ")}`;
     }
 
-    twitchService.Tweet(formattedMessage);
+    return outputMessage;
   }
 }
