@@ -78,6 +78,13 @@ commands:
     policies:
       mod: true
       admin: true
+    tags:
+      - "@TwitchFR"
+      - "@Twitch"
+      - "@PetitStreamQC"
+      - "@RT4French"
+      - "@RT_StreamQc"
+      - "@RtCocorico"
 schedulers:
   - id: "social"
     minutes: 15
