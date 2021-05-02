@@ -116,11 +116,13 @@ export class YamlService implements IYamlService {
           );
         }
       }
-      if (element.name === "!tweet") {
+      if (element.name === "!tweet" && element.tags) {
         commands.push(
           new TweetMessageCommand(
             element.name,
-            this._getCommandPolicies(element.policies)
+            this._getCommandPolicies(element.policies),
+            this._configuration.Twitch.Channel,
+            element.tags
           )
         );
       }

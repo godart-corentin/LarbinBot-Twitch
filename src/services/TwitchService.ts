@@ -66,17 +66,16 @@ export class TwitchService implements ITwitchService {
   }
 
   public Tweet(message: string): void {
-    const finalMessage = `${message}. C'est par ici que ça se passe: https://twitch.tv/${this._configuration.Twitch.Channel}`;
     this._twitClient.post(
       "statuses/update",
-      { status: finalMessage },
+      { status: message },
       (err, data, response) => {
         if (err) {
           this._loggerService.Error(
-            `Tweet error: ${err.message} (message: ${finalMessage}).`
+            `Tweet error: ${err.message} (message: ${message}).`
           );
         } else {
-          this._loggerService.Information(`Tweet: ${finalMessage}`);
+          this._loggerService.Information(`Tweet: ${message}`);
         }
       }
     );
