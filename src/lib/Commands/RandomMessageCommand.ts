@@ -1,5 +1,5 @@
-import { BaseCommand, CommandPolicies } from '.';
-import { ITwitchService } from '../../services/TwitchService';
+import { BaseCommand, CommandPolicies } from ".";
+import { ITwitchService } from "../../services/TwitchService";
 
 /**
  * Random Message Command
@@ -10,13 +10,13 @@ export class RandomMessageCommand extends BaseCommand {
   constructor(
     trigger: string,
     policies: CommandPolicies,
-    messages: Array<string>)
-  {
+    messages: Array<string>
+  ) {
     super(trigger, policies);
     this._messages = messages;
   }
 
-  protected getMessage() : string {
+  protected getMessage(): string {
     return this._messages[Math.floor(Math.random() * this._messages.length)];
   }
 

@@ -74,6 +74,10 @@ commands:
       others: true
     messages:
       - "Cliquez sur le lien et rejoignez la famille inSTREAMLY ! Streamez et gagnez de l'argent grâce à votre passion ! https://instream.ly/inS-FR_onegaxx_?p=10"
+  - name: "!tweet"
+    policies:
+      mod: true
+      admin: true
 schedulers:
   - id: "social"
     minutes: 15

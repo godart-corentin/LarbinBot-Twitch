@@ -1,19 +1,22 @@
-import { Client } from 'tmi.js'
-import { inject, singleton } from 'tsyringe';
-import { IConfiguration } from '../Configuration';
-import { ICommand } from '../lib/Commands';
-import { IEvent, IEventParams } from '../lib/Events';
-import { IScheduler } from '../lib/Schedulers';
-import { EventTypeParamsMapper } from '../mappers/EventTypeParamsMapper';
-import { ILoggerService } from '.';
-import { ITmiFactory } from '../factory/TmiFactory';
-import { setInterval, clearInterval } from 'timers';
+import { Client } from "tmi.js";
+import Twit from "twit";
+import { inject, singleton } from "tsyringe";
+import { IConfiguration } from "../Configuration";
+import { ICommand } from "../lib/Commands";
+import { IEvent, IEventParams } from "../lib/Events";
+import { IScheduler } from "../lib/Schedulers";
+import { EventTypeParamsMapper } from "../mappers/EventTypeParamsMapper";
+import { ILoggerService } from ".";
+import { ITmiFactory } from "../factory/TmiFactory";
+import { setInterval, clearInterval } from "timers";
+import { ITwitFactory } from "../factory/TwitFactory";
 
 /**
- * Provides all twitch tools 
+ * Provides all twitch tools
  */
 export interface ITwitchService {
   Write(message: string): void;
+  Tweet(message: string): void;
   AddCommand(command: ICommand): ITwitchService;
   AddScheduler(scheduler: IScheduler): ITwitchService;
   StartSchedulers(): void;
@@ -32,20 +35,23 @@ export class TwitchService implements ITwitchService {
   private _loggerService: ILoggerService;
   private _configuration: IConfiguration;
   private _client: Client;
+  private _twitClient: Twit;
 
   constructor(
-    @inject('ILoggerService') loggerService: ILoggerService,
-    @inject('IConfiguration') configuration: IConfiguration,
-    @inject('ITmiFactory') tmiFactory: ITmiFactory
+    @inject("ILoggerService") loggerService: ILoggerService,
+    @inject("IConfiguration") configuration: IConfiguration,
+    @inject("ITmiFactory") tmiFactory: ITmiFactory,
+    @inject("ITwitFactory") twitFactory: ITwitFactory
   ) {
     this._loggerService = loggerService;
     this._configuration = configuration;
     this._client = tmiFactory.Client;
+    this._twitClient = twitFactory.Client;
   }
 
   public Listen(): void {
     this.StartSchedulers();
-    this._client.on('message', (channels, userstate, message) => {
+    this._client.on("message", (channels, userstate, message) => {
       const command = this._commands.find((x) => message.startsWith(x.Trigger));
       if (command != undefined) {
         if (command.CanAction(userstate, this._configuration)) {
@@ -57,6 +63,23 @@ export class TwitchService implements ITwitchService {
 
   public Write(message: string): void {
     this._client.say(this._configuration.Twitch.Channel, message);
+  }
+
+  public Tweet(message: string): void {
+    const finalMessage = `${message}. C'est par ici que ça se passe: https://twitch.tv/${this._configuration.Twitch.Channel}`;
+    this._twitClient.post(
+      "statuses/update",
+      { status: finalMessage },
+      (err, data, response) => {
+        if (err) {
+          this._loggerService.Error(
+            `Tweet error: ${err.message} (message: ${finalMessage}).`
+          );
+        } else {
+          this._loggerService.Information(`Tweet: ${finalMessage}`);
+        }
+      }
+    );
   }
 
   public AddCommand(command: ICommand): ITwitchService {
@@ -72,9 +95,13 @@ export class TwitchService implements ITwitchService {
   public StartSchedulers(): void {
     this.StopSchedulers();
     this._schedulers.forEach((scheduler) => {
-      const interval = setInterval((twitchService) => scheduler.Action(twitchService), scheduler.Minutes * 60000, this);
+      const interval = setInterval(
+        (twitchService) => scheduler.Action(twitchService),
+        scheduler.Minutes * 60000,
+        this
+      );
       this._schedulersIntervals.push(interval);
-    })
+    });
   }
 
   public StopSchedulers(): void {

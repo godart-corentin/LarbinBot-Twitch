@@ -1,15 +1,30 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { inject, singleton } from 'tsyringe';
-import { IConfiguration } from '../Configuration';
-import YAML from 'yaml';
-import FS from 'fs';
-import Path from 'path';
-import { CommandPolicies, ICommand, RandomMessageCommand, RoundRobinMessageCommand } from '../lib/Commands';
-import { ILoggerService, ICryptoService } from '.';
-import { IEvent, IEventParams, RandomMessageEvent, RoundRobinMessageEvent } from '../lib/Events';
-import { IScheduler, RandomScheduler, RoundRobinScheduler } from '../lib/Schedulers';
-import { SchedulersToolsCommand } from '../lib/Commands/Tools';
-import { YamlFile, YamlPolicies } from '../lib/Yaml';
+import { inject, singleton } from "tsyringe";
+import { IConfiguration } from "../Configuration";
+import YAML from "yaml";
+import FS from "fs";
+import Path from "path";
+import {
+  CommandPolicies,
+  ICommand,
+  RandomMessageCommand,
+  RoundRobinMessageCommand,
+  TweetMessageCommand,
+} from "../lib/Commands";
+import { ILoggerService, ICryptoService } from ".";
+import {
+  IEvent,
+  IEventParams,
+  RandomMessageEvent,
+  RoundRobinMessageEvent,
+} from "../lib/Events";
+import {
+  IScheduler,
+  RandomScheduler,
+  RoundRobinScheduler,
+} from "../lib/Schedulers";
+import { SchedulersToolsCommand } from "../lib/Commands/Tools";
+import { YamlFile, YamlPolicies } from "../lib/Yaml";
 
 /**
  * Provides tools for Yaml validation/parser
@@ -28,9 +43,9 @@ export class YamlService implements IYamlService {
   private _cryptoService: ICryptoService;
 
   constructor(
-    @inject('ILoggerService') loggerService: ILoggerService,
-    @inject('IConfiguration') configuration: IConfiguration,
-    @inject('ICryptoService') cryptoService: ICryptoService
+    @inject("ILoggerService") loggerService: ILoggerService,
+    @inject("IConfiguration") configuration: IConfiguration,
+    @inject("ICryptoService") cryptoService: ICryptoService
   ) {
     this._loggerService = loggerService;
     this._configuration = configuration;
@@ -42,9 +57,14 @@ export class YamlService implements IYamlService {
       return this._yamlContent;
     }
 
-    const pathToFile = Path.join(this._configuration.App.ConfigurationPath, this._configuration.App.ConfigurationFile);
+    const pathToFile = Path.join(
+      this._configuration.App.ConfigurationPath,
+      this._configuration.App.ConfigurationFile
+    );
     if (!FS.existsSync(pathToFile)) {
-      this._loggerService.Debug(`Unable to find configuration file on ${pathToFile}`)
+      this._loggerService.Debug(
+        `Unable to find configuration file on ${pathToFile}`
+      );
       return this._yamlContent;
     }
 
@@ -65,7 +85,7 @@ export class YamlService implements IYamlService {
       Mod: policies.mod ?? defaultPolicies.Mod,
       Vip: policies.vip ?? defaultPolicies.Vip,
       Sub: policies.sub ?? defaultPolicies.Sub,
-      Others: policies.others ?? defaultPolicies.Others
+      Others: policies.others ?? defaultPolicies.Others,
     } as CommandPolicies;
   }
   public getCommands(): Array<ICommand> {
@@ -79,22 +99,50 @@ export class YamlService implements IYamlService {
     yamlContent.commands?.forEach((element: any) => {
       if (element.name && element.messages) {
         if (element.random) {
-          commands.push(new RandomMessageCommand(element.name, this._getCommandPolicies(element.policies), element.messages));
+          commands.push(
+            new RandomMessageCommand(
+              element.name,
+              this._getCommandPolicies(element.policies),
+              element.messages
+            )
+          );
         } else {
-          commands.push(new RoundRobinMessageCommand(element.name, this._getCommandPolicies(element.policies), element.messages));
+          commands.push(
+            new RoundRobinMessageCommand(
+              element.name,
+              this._getCommandPolicies(element.policies),
+              element.messages
+            )
+          );
         }
+      }
+      if (element.name === "!tweet") {
+        commands.push(
+          new TweetMessageCommand(
+            element.name,
+            this._getCommandPolicies(element.policies)
+          )
+        );
       }
     });
 
     yamlContent.tools?.commands?.forEach((element: any) => {
-      if (element.type === 'schedulers' && element.argOn && element.argOff && element.argStatus) {
-        commands.push(new SchedulersToolsCommand(
-          element.name,
-          this._getCommandPolicies(element.policies),
-          this._configuration,
-          element.argOn,
-          element.argOff,
-          element.argStatus));
+      if (
+        element.type === "schedulers" &&
+        element.argOn &&
+        element.argOff &&
+        element.argStatus
+      ) {
+        commands.push(
+          new SchedulersToolsCommand(
+            element.name,
+            this._getCommandPolicies(element.policies),
+            this._configuration,
+            element.argOn,
+            element.argOff,
+            element.argStatus
+          )
+        );
       }
     });
 
@@ -112,9 +160,21 @@ export class YamlService implements IYamlService {
     yamlContent.schedulers.forEach((element: any) => {
       if (element.id && element.minutes && element.messages) {
         if (element.random) {
-          schedulers.push(new RandomScheduler(`${element.id}#${this._cryptoService.UniqueString(6)}`, element.minutes, element.messages));
+          schedulers.push(
+            new RandomScheduler(
+              `${element.id}#${this._cryptoService.UniqueString(6)}`,
+              element.minutes,
+              element.messages
+            )
+          );
         } else {
-          schedulers.push(new RoundRobinScheduler(`${element.id}#${this._cryptoService.UniqueString(6)}`, element.minutes, element.messages));
+          schedulers.push(
+            new RoundRobinScheduler(
+              `${element.id}#${this._cryptoService.UniqueString(6)}`,
+              element.minutes,
+              element.messages
+            )
+          );
         }
       }
     });
@@ -135,7 +195,9 @@ export class YamlService implements IYamlService {
         if (element.random) {
           events.push(new RandomMessageEvent(element.name, element.messages));
         } else {
-          events.push(new RoundRobinMessageEvent(element.name, element.messages));
+          events.push(
+            new RoundRobinMessageEvent(element.name, element.messages)
+          );
         }
       }
     });

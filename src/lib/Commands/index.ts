@@ -1,9 +1,9 @@
-import { ChatUserstate, Userstate } from 'tmi.js';
-import { Configuration } from '../../Configuration';
-import { ITwitchService } from '../../services/TwitchService';
+import { ChatUserstate, Userstate } from "tmi.js";
+import { Configuration } from "../../Configuration";
+import { ITwitchService } from "../../services/TwitchService";
 
 /**
- * Policies Command 
+ * Policies Command
  */
 export class CommandPolicies {
   public Admin = false;
@@ -19,7 +19,11 @@ export class CommandPolicies {
 export interface ICommand {
   Trigger: string;
   Policies: CommandPolicies;
-  Action(twitchService: ITwitchService, fullMessage: string, state: ChatUserstate): void;
+  Action(
+    twitchService: ITwitchService,
+    fullMessage: string,
+    state: ChatUserstate
+  ): void;
   CanAction(userState: Userstate, configuration: Configuration): boolean;
 }
 
@@ -38,7 +42,11 @@ export abstract class BaseCommand implements ICommand {
     this._policies = policies;
   }
 
-  abstract Action(twitchService: ITwitchService, fullMessage: string, userState: ChatUserstate): void;
+  abstract Action(
+    twitchService: ITwitchService,
+    fullMessage: string,
+    userState: ChatUserstate
+  ): void;
   public CanAction(userState: Userstate): boolean {
     if (this._policies.Sub && userState.subscriber) {
       return true;
@@ -49,7 +57,10 @@ export abstract class BaseCommand implements ICommand {
     if (this._policies.Mod && userState.mod) {
       return true;
     }
-    if (this._policies.Admin && (userState.badges?.admin != null || userState.badges?.broadcaster != null)) {
+    if (
+      this._policies.Admin &&
+      (userState.badges?.admin != null || userState.badges?.broadcaster != null)
+    ) {
       return true;
     }
     if (this.Policies.Others) {
@@ -62,5 +73,6 @@ export abstract class BaseCommand implements ICommand {
 /**
  * Commands
  */
-export * from './RandomMessageCommand';
-export * from './RoundRobinMessageCommand';
+export * from "./RandomMessageCommand";
+export * from "./RoundRobinMessageCommand";
+export * from "./TweetMessageCommand";
