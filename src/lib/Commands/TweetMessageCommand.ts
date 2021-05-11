@@ -17,7 +17,6 @@ export class TweetMessageCommand extends BaseCommand {
     super(trigger, policies);
     this._channel = channel;
     this._tags = tags;
-    console.log(this._tags);
   }
 
   public Action(twitchService: TwitchService, message: string): void {
@@ -33,7 +32,7 @@ export class TweetMessageCommand extends BaseCommand {
     }`;
 
     if (this._tags.length > 0) {
-      inputMessage += `\r\n\r\n${this._tags.join(" ")}`;
+      outputMessage += `\r\n\r\n${this._tags.join(" ")}`;
     }
 
     return outputMessage;
