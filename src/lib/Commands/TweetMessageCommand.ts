@@ -17,6 +17,7 @@ export class TweetMessageCommand extends BaseCommand {
     super(trigger, policies);
     this._channel = channel;
     this._tags = tags;
+    console.log(this._tags);
   }
 
   public Action(twitchService: TwitchService, message: string): void {

@@ -85,6 +85,7 @@ commands:
       - "@RT4French"
       - "@RT_StreamQc"
       - "@RtCocorico"
+      - "@PetitsStreams"
 schedulers:
   - id: "social"
     minutes: 15
