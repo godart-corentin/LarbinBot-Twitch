@@ -27,9 +27,7 @@ export class TweetMessageCommand extends BaseCommand {
     let outputMessage = `${inputMessage.replace(
       "!tweet ",
       ""
-    )}\r\n\r\nÇa se passe ici: ▶ twitch.tv/${this._channel} twitch.tv/${
-      this._channel
-    }`;
+    )}\r\n\r\nÇa se passe ici: ▶ twitch.tv/${this._channel}`;
 
     if (this._tags.length > 0) {
       outputMessage += `\r\n\r\n${this._tags.join(" ")}`;
