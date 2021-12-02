@@ -21,8 +21,8 @@ export class TweetMessageCommand extends BaseCommand {
 
   public Action(twitchService: TwitchService, message: string): void {
     const formattedMessage = this.FormatMessage(message)
-    if(formattedMessage.length > 255) {
-      twitchService.Write(`Le tweet est trop long ! (${formattedMessage.length}/255)`)
+    if(formattedMessage.length > 280) {
+      twitchService.Write(`Le tweet est trop long ! (${formattedMessage.length}/280)`)
     } else {
       twitchService.Tweet(formattedMessage);
     }
